@@ -3,3 +3,7 @@ expression.tab.c
 expression.tab.h
 # flex tmp file
 lex.yy.c
+# IDE
+.vscode/
+# binary
+ROBDD
