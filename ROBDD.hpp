@@ -2,13 +2,13 @@
     #define _ROBDD
     #include <map>
     #include <string>
+    #include <vector>
     enum binary_op {OP_AND, OP_OR, OP_NOT, OP_THEN};
     struct BDD_node
     {
         // var = 0 and var = 1 reserved
         unsigned int var;
         BDD_node *high, *low;
-        unsigned int ref_count{0};
         bool operator<(const BDD_node &rhs) const {return this->var < rhs.var;}
     };
 
@@ -19,10 +19,13 @@
         BDD_node *one, *zero;
         std::map<BDD_node, BDD_node*> node_table;
         std::map<std::string, unsigned int> var_to_ID;
+        std::map<unsigned int, std::string> ID_to_var;
         std::map<std::pair<BDD_node*, BDD_node*>, BDD_node*> apply_table[sizeof(binary_op)];
         unsigned int avail_ID = 2; //0 & 1 is reserved
         BDD_node *apply_(binary_op op, BDD_node *high, BDD_node *low);
         BDD_node *calc(binary_op op, BDD_node *high, BDD_node *low);
+        void _output(BDD_node *, std::ofstream &);
+        std::vector<bool> printed;
     public:
         ROBDD();
         // get id for var
@@ -31,8 +34,10 @@
         BDD_node *make_node(unsigned int ID, BDD_node *high, BDD_node *low);
         // eliminate binary operators
         BDD_node *apply(binary_op op, BDD_node *high, BDD_node *low);
-        void set_root(BDD_node * node);
+        void set_root(BDD_node *);
         // delete nodes with references count = 0
         void trim();
+        // print ROBDD to .dot file for graphviz
+        void output(std::ofstream &);
     };
 #endif
