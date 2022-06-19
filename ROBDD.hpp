@@ -35,5 +35,4 @@
         // delete nodes with references count = 0
         void trim();
     };
-    static ROBDD *T;
 #endif

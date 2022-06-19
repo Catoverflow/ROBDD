@@ -1,12 +1,13 @@
 %{
 #include <iostream>
 #include <string>
+#include "ROBDD.hpp"
 int yylex(void);
 void yyerror(const char *s);
+extern ROBDD *T;
 %}
 
 %code requires {
-#include <memory>
 #include "ROBDD.hpp"
 }
 

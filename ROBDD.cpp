@@ -1,7 +1,7 @@
 #include "ROBDD.hpp"
 #include <vector>
 int yyparse();
-
+ROBDD *T;
 ROBDD::ROBDD()
 {
     this->zero = new BDD_node({0, nullptr, nullptr});
