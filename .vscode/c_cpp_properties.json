@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "name": "antlr",
+            "includePath": [
+                "/usr/include/antlr4-runtime"
+            ],
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}
