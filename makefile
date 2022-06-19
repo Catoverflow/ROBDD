@@ -11,7 +11,7 @@ $(parser): expression.y
 	bison expression.y -d
 
 image: $(graphviz_src)
-	dot -Tpng $(graphviz_src) -o res.png
+	dot -Tsvg $(graphviz_src) -o res.svg
 
 .PHONY: clean
 clean:

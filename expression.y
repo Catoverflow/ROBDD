@@ -12,14 +12,13 @@ extern ROBDD *T;
 }
 
 %token RET LRPAREN RRPAREN
+%token OR AND NOT THEN
 %token <var> VAR
-%token <op> OR AND NOT THEN
 %type <node> boolean_expr expr dnf cnf term atom
 
 %start boolean_expr
 
 %union {
-    binary_op op;
     char *var;
     BDD_node *node;
 }
@@ -47,7 +46,7 @@ term
 
 atom
 : LRPAREN expr RRPAREN {$$ = $2;}
-| VAR {unsigned int ID = T->get_ID(std::string($1)); $$ = T->make_node(ID, nullptr, nullptr);}
+| VAR {unsigned int ID = T->get_ID(std::string($1)); $$ = T->make_node(ID, T->zero, T->one);}
 
 %%
 
