@@ -1,5 +1,6 @@
 #include "ROBDD.hpp"
 #include <fstream>
+#include <getopt.h>
 int yyparse();
 ROBDD *T;
 ROBDD::ROBDD()
@@ -100,21 +101,35 @@ void ROBDD::set_root(BDD_node *node)
     this->root = node;
 }
 
-void ROBDD::trim()
+bool ROBDD::_SAT(BDD_node *node, bool all_sat = false)
 {
-    /*
-    std::vector<BDD_node> to_remove;
-    for (auto it : this->node_table)
-        if (it.second->ref_count == 0)
-            to_remove.push_back(it.first);
-    for (auto it : to_remove)
-    {
-        delete this->node_table[it];
-        this->node_table.erase(it);
-    }
-    */
-    for (auto it : this->apply_table)
-        it.clear();
+    if (node->var == 1)
+        return true;
+    else if (node->var == 0)
+        return false;
+    if (all_sat)
+        return this->_SAT(node->high, true) & this->_SAT(node->low, true);
+    else
+        return this->_SAT(node->high) | this->_SAT(node->low);
+}
+
+bool ROBDD::SAT(bool all_sat = false)
+{
+    return this->_SAT(this->root, all_sat);
+}
+
+unsigned int ROBDD::_SATCOUNT(BDD_node *node)
+{
+    if (node->var == 1)
+        return 1;
+    else if (node->var == 0)
+        return 0;
+    return this->_SATCOUNT(node->high) | this->_SATCOUNT(node->low);
+}
+
+unsigned int ROBDD::SATCOUNT()
+{
+    return this->_SATCOUNT(this->root);
 }
 
 void ROBDD::output(std::ofstream &out)

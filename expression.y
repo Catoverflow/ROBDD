@@ -26,7 +26,7 @@ extern ROBDD *T;
 %%
 
 boolean_expr
-: expr {T->set_root($1); /*T->trim();*/ YYABORT;}
+: expr {T->set_root($1); YYABORT;}
 
 expr
 : expr THEN dnf {$$ = T->apply(OP_THEN, $1, $3);}

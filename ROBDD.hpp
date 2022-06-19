@@ -47,6 +47,9 @@ private:
     // for ROBDD printing
     std::vector<bool> printed;
     std::unordered_map<unsigned int, std::string> ID_to_var;
+    // for SAT question
+    bool _SAT(BDD_node *, bool all_sat);
+    unsigned _SATCOUNT(BDD_node *);
 
 public:
     ROBDD();
@@ -58,9 +61,11 @@ public:
     BDD_node *apply(binary_op op, BDD_node *low, BDD_node *high);
     void set_root(BDD_node *);
     // delete nodes with references count = 0
-    void trim();
+    // void trim();
     // print ROBDD to .dot file for graphviz
     void output(std::ofstream &);
+    bool SAT(bool all_sat);
+    unsigned int SATCOUNT();
     BDD_node *one, *zero;
 };
 #endif
