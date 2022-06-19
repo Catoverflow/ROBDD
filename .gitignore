@@ -7,3 +7,7 @@ lex.yy.c
 .vscode/
 # binary
 ROBDD
+# graphviz source and output
+*.dot
+*.png
+*.svg
