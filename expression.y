@@ -11,7 +11,7 @@ extern ROBDD *T;
 #include "ROBDD.hpp"
 }
 
-%token RET LRPAREN RRPAREN
+%token RET LPAREN RPAREN
 %token OR AND NOT THEN
 %token <var> VAR
 %type <node> boolean_expr expr dnf cnf term atom
@@ -26,7 +26,7 @@ extern ROBDD *T;
 %%
 
 boolean_expr
-: expr {std::cout << '\n'; T->set_root($1); /*T->trim();*/}
+: expr {T->set_root($1); /*T->trim();*/ YYABORT;}
 
 expr
 : expr THEN dnf {$$ = T->apply(OP_THEN, $1, $3);}
@@ -45,7 +45,7 @@ term
 | atom {$$ = $1;}
 
 atom
-: LRPAREN expr RRPAREN {$$ = $2;}
+: LPAREN expr RPAREN {$$ = $2;}
 | VAR {unsigned int ID = T->get_ID(std::string($1)); $$ = T->make_node(ID, T->zero, T->one);}
 
 %%
