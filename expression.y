@@ -27,7 +27,7 @@ extern ROBDD *T;
 %%
 
 boolean_expr
-: expr RET {std::cout << '\n'; T->trim();}
+: expr {std::cout << '\n'; T->set_root($1); /*T->trim();*/}
 
 expr
 : expr THEN dnf {$$ = T->apply(OP_THEN, $1, $3);}
