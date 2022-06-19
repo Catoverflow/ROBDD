@@ -1,0 +1,29 @@
+digraph ROBDD {
+fontname="Helvetica,Arial,sans-serif"
+node [fontname="Helvetica,Arial,sans-serif"]
+edge [fontname="Helvetica,Arial,sans-serif"]
+node [shape=circle];
+"a"
+"a" -> "e"[style = dotted]
+"a" -> "b"
+"e"
+"e" -> "1"[style = dotted]
+"e" -> "f"
+"1"
+"f"
+"f" -> "1"[style = dotted]
+"f" -> "h"
+"h"
+"h" -> "0"[style = dotted]
+"h" -> "1"
+"0"
+"b"
+"b" -> "c"[style = dotted]
+"b" -> "e"
+"c"
+"c" -> "h"[style = dotted]
+"c" -> "d"
+"d"
+"d" -> "h"[style = dotted]
+"d" -> "e"
+}
