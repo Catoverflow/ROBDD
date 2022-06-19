@@ -2,7 +2,7 @@
 
 **An ROBDD constructor and SAT/unSAT solver (WIP)** written in C++
 
-![example](README.assets/example.svg)
+![example](./example.svg)
 
 ## Requirement
 
