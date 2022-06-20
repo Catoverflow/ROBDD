@@ -150,6 +150,9 @@ unsigned int ROBDD::SATCOUNT()
 void ROBDD::output(std::ofstream &out)
 {
     this->printed.clear();
+    this->printed[this->zero] = 0;
+    this->printed[this->one] = 1;
+    this->uuid = 2;
     for (auto it : this->var_to_ID)
         this->ID_to_var[it.second] = it.first;
     out << "digraph ROBDD {\n"
@@ -162,44 +165,44 @@ void ROBDD::output(std::ofstream &out)
     this->printed.clear();
 }
 
+
 void ROBDD::_output(BDD_node *node, std::ofstream &out)
 {
-    out << "\"";
-    if (node->var > 1)
-        out << this->ID_to_var[node->var];
-    else
-        out << node->var;
-    out << "\"" << std::endl;
-    this->printed.insert(*node);
+    // print node itself
+    if (this->printed.find(node) == this->printed.end())
+    {
+        this->printed[node] = uuid++;
+        out << "\"";
+        out << this->printed[node]; // use uuid to identify nodes
+        out << "\" [label=\"";
+        if (node->var > 1)
+            out << this->ID_to_var[node->var];
+        else
+            out << node->var;
+        out << "\"]" <<  std::endl; // use label as node name
+    }
+    // no subnodes
     if (node->var <= 1)
         return;
+    // print links to subnodes
     else
     {
-        out << "\"";
-        out << this->ID_to_var[node->var];
-        out << "\"";
-        out << " -> ";
-        out << "\"";
-        if (node->low->var > 1)
-            out << this->ID_to_var[node->low->var];
-        else
-            out << node->low->var;
-        out << "\""
-            << "[style = dotted]" << std::endl;
-        out << "\"";
-        out << this->ID_to_var[node->var];
-        out << "\"";
-        out << " -> ";
-        out << "\"";
-        if (node->high->var > 1)
-            out << this->ID_to_var[node->high->var];
-        else
-            out << node->high->var;
-        out << "\"" << std::endl;
-        if (this->printed.find(*(node->low)) == this->printed.end())
+        // left
+        if (this->printed.find(node->low) == this->printed.end())
             _output(node->low, out);
-        if (this->printed.find(*(node->high)) == this->printed.end())
+        out << "\"";
+        out << this->printed[node];
+        out << "\" -> \"";
+        out << this->printed[node->low];
+        out << "\" [style = dotted]" << std::endl;
+        // right
+        if (this->printed.find(node->high) == this->printed.end())
             _output(node->high, out);
+        out << "\"";
+        out << this->printed[node];
+        out << "\" -> \"";
+        out << this->printed[node->high];
+        out << "\"" << std::endl;
     }
 }
 
