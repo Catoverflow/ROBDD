@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <getopt.h>
+#include <stdlib.h>
 #include <stdio.h>
 int yyparse();
 ROBDD *T;
@@ -54,6 +55,18 @@ BDD_node *ROBDD::calc(binary_op op, BDD_node *left, BDD_node *right)
         break;
     case OP_THEN:
         if (left->var == 0 or right->var == 1)
+            return this->one;
+        else
+            return this->zero;
+        break;
+    case OP_XNOR:
+        if (left->var == right->var)
+            return this->one;
+        else
+            return this->zero;
+        break;
+    case OP_XOR:
+        if (left->var != right->var)
             return this->one;
         else
             return this->zero;
@@ -223,10 +236,14 @@ int main(int argc, char **argv)
             else
                 fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
             std::cerr << "Usage: ROBDD [-s] [-S] [-c] [-o filename]" << std::endl;
-            std::cerr << " -s\t" << "- Print any SAT result" << std::endl;
-            std::cerr << " -S\t" << "- Print all SAT result" << std::endl;
-            std::cerr << " -c\t" << "- Print SAT count" << std::endl;
-            std::cerr << " -o filename\t" << "- Print ROBDD to image" << std::endl;
+            std::cerr << " -s\t"
+                      << "- Print any SAT result" << std::endl;
+            std::cerr << " -S\t"
+                      << "- Print all SAT result" << std::endl;
+            std::cerr << " -c\t"
+                      << "- Print SAT count" << std::endl;
+            std::cerr << " -o filename\t"
+                      << "- Print ROBDD to image" << std::endl;
             return 1;
         default:
             abort();
@@ -248,10 +265,10 @@ int main(int argc, char **argv)
         std::ofstream out(filename + ".tmp");
         T->output(out);
         out.close();
-        FILE *fp = popen(("dot " + filename + ".tmp" + " -Tsvg -o " + filename).c_str(), "r");
-        fclose(fp);
-        FILE *rfp = popen(("rm -f " + filename).c_str(), "r");
-        fclose(rfp);
+        system(("dot " + filename + ".tmp" + " -Tsvg -o " + filename + ".svg").c_str());
+        std::cerr << ("dot " + filename + ".tmp" + " -Tsvg -o " + filename + ".svg").c_str();
+        system(("rm -f " + filename + ".tmp").c_str());
+        std::cerr << ("rm -f " + filename + ".tmp").c_str();
         std::cout << "output written to " << filename << '.' << std::endl;
     }
     return 0;
