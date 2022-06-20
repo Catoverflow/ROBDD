@@ -35,7 +35,7 @@ Each variable must start with letter (uppercase or lowercase), and can be a mixt
 | Symbol | Corresponding operation | Example                        | Priority |
 | ------ | ----------------------- | ------------------------------ | -------- |
 | `~`    | $\neg$ not              | `~a` for $\neg a$              | 1        |
-| `&`    | $\wedge$ and            | `a&b` for $a\wedge b$`         | 2        |
+| `&`    | $\wedge$ and            | `a&b` for $a\wedge b$          | 2        |
 | `|`    | $\vee$ or               | `a|b` for $a\wedge b$          | 2        |
 | `=`    | $\leftrightarrow$ xnor  | `a=b` for $a\leftrightarrow b$ | 2        |
 | `!=`   | $\neq$ xor              | `a!=b` for $a\neq b$           | 2        |
