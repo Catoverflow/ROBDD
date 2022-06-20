@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
+#include <unordered_set>
 enum binary_op
 {
     OP_AND,
@@ -45,8 +46,8 @@ private:
     BDD_node *calc(binary_op op, BDD_node *left, BDD_node *right);
     void _output(BDD_node *, std::ofstream &);
     // for ROBDD printing
-    std::vector<bool> printed;
     std::unordered_map<unsigned int, std::string> ID_to_var;
+    std::unordered_set<BDD_node, BDD_node_hash> printed;
     // for SAT question
     bool _SAT(BDD_node *, bool all_sat);
     unsigned _SATCOUNT(BDD_node *);

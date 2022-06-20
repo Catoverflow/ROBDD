@@ -134,9 +134,7 @@ unsigned int ROBDD::SATCOUNT()
 
 void ROBDD::output(std::ofstream &out)
 {
-    this->printed.resize(this->avail_ID);
-    for (int i = 0; i < avail_ID; i++)
-        this->printed[i] = false;
+    this->printed.clear();
     for (auto it : this->var_to_ID)
         this->ID_to_var[it.second] = it.first;
     out << "digraph ROBDD {\n"
@@ -146,20 +144,18 @@ void ROBDD::output(std::ofstream &out)
         << "node [shape=circle];\n";
     this->_output(this->root, out);
     out << "}";
+    this->printed.clear();
 }
 
 void ROBDD::_output(BDD_node *node, std::ofstream &out)
 {
-    if (!this->printed[node->var])
-    {
-        out << "\"";
-        if (node->var > 1)
-            out << this->ID_to_var[node->var];
-        else
-            out << node->var;
-        out << "\"" << std::endl;
-        this->printed[node->var] = true;
-    }
+    out << "\"";
+    if (node->var > 1)
+        out << this->ID_to_var[node->var];
+    else
+        out << node->var;
+    out << "\"" << std::endl;
+    this->printed.insert(*node);
     if (node->var <= 1)
         return;
     else
@@ -184,9 +180,9 @@ void ROBDD::_output(BDD_node *node, std::ofstream &out)
         else
             out << node->high->var;
         out << "\"" << std::endl;
-        if (!printed[node->low->var])
+        if (this->printed.find(*(node->low)) == this->printed.end())
             _output(node->low, out);
-        if (!printed[node->high->var])
+        if (this->printed.find(*(node->high)) == this->printed.end())
             _output(node->high, out);
     }
 }
