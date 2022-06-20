@@ -6,17 +6,45 @@
 
 ## Requirement
 
-You need to install flex, bison, gcc for compiling and graphviz for image generating.
+`flex`, `bison` for ROBDD frontend, `graphviz` for image generating.
 
-## How-to
+## Usage
 
-Compile first
+`make ROBDD` conpile to binary first.
 
-`make ROBDD`
+~~~~
+Usage: ROBDD [-Ssc] [-o filename]
+ -S         - Check if the proposition is All-SAT
+ -s         - Check if the proposition is Any-SAT
+ -c         - Return SAT count for the proposition
+ -o file    - Print ROBDD to filename.svg
+~~~~
 
-Open `ROBDD` binary, type in any binary function you like, and press ENTER. It will generate `res.dot`
+Input your proposition then.
 
-`make image` Process `res.dot` by Graphviz and generate `res.svg` as ROBDD output.
+## Syntax
+
+### Variable
+
+For BDD, we take every variables as bool variables, which means they only take 0 or 1 as assignment.
+
+Each variable must start with letter (upper class or lower class), and can be a mixture of digits of letter, as regex `[a-zA-Z]+[0-9]*` suggests.
+
+### Operator
+
+| Symbol | Corresponding operation | Example                        | Priority |
+| ------ | ----------------------- | ------------------------------ | -------- |
+| `~`    | $\neg$ not              | `~a` for $\neg a$              | 1        |
+| `&`    | $\wedge$ and            | `a&b` for $a\wedge b$`         | 2        |
+| `|`    | $\vee$ or               | `a|b` for $a\wedge b$          | 2        |
+| `=`    | $\leftrightarrow$ xnor  | `a=b` for $a\leftrightarrow b$ | 2        |
+| `!=`   | $\neq$ xor              | `a!=b` for $a\neq b$           | 2        |
+| `->`   | $\rightarrow$ infer     | `a->b` for $a\rightarrow b$    | 3        |
+| `()`   | pair of parentheses     | `(some formula here)`          | 0        |
+
+Smaller number means higher priority.
+
+A valid proposition for example: `Aa&B->C0|h`
 
 ## Credits
 

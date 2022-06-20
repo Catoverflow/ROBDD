@@ -239,11 +239,11 @@ int main(int argc, char **argv)
                 fprintf(stderr, "Unknown option `-%c'.\n", optopt);
             else
                 fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
-            std::cerr << "Usage: ROBDD [-s] [-S] [-c] [-o filename]" << std::endl;
-            std::cerr << " -s\t- Print any SAT result" << std::endl;
-            std::cerr << " -S\t- Print all SAT result" << std::endl;
-            std::cerr << " -c\t- Print SAT count" << std::endl;
-            std::cerr << " -o filename\t- Print ROBDD to image" << std::endl;
+            std::cerr << "Usage: ROBDD [-Ssc] [-o filename]" << std::endl;
+            std::cerr << " -s\t\t- Check if the proposition is All-SAT" << std::endl;
+            std::cerr << " -S\t\t- Check if the proposition is Any-SAT" << std::endl;
+            std::cerr << " -c\t\t- Return SAT count for the proposition" << std::endl;
+            std::cerr << " -o filename\t- Print ROBDD to filename.svg" << std::endl;
             return 1;
         default:
             abort();
