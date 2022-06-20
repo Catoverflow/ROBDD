@@ -24,16 +24,19 @@ struct ROBDD
 private:
     struct BDD_node_hash
     {
-        std::size_t operator()(const BDD_node& T) const
+        std::size_t operator()(const BDD_node &T) const
         {
-            return std::hash<void*>()(static_cast<void*>(T.low))^std::hash<void*>()(static_cast<void*>(T.high))^std::hash<int>()(T.var);
+            return std::hash<void *>()(static_cast<void *>(T.low))
+                 ^ std::hash<void *>()(static_cast<void *>(T.high))
+                 ^ std::hash<int>()(T.var);
         }
     };
     struct BDD_pair_hash
     {
-        std::size_t operator()(const std::pair<BDD_node*, BDD_node*> &T) const
+        std::size_t operator()(const std::pair<BDD_node *, BDD_node *> &T) const
         {
-            return std::hash<void*>()(static_cast<void*>(T.first))^std::hash<void*>()(static_cast<void*>(T.second));
+            return std::hash<void *>()(static_cast<void *>(T.first))
+                 ^ std::hash<void *>()(static_cast<void *>(T.second));
         }
     };
     BDD_node *root;
