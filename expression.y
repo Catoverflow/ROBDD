@@ -12,15 +12,17 @@ extern ROBDD *T;
 }
 
 %token RET LPAREN RPAREN
-%token OR AND NOT THEN
+%token OR AND NOT THEN XNOR XOR
 %token <var> VAR
-%type <node> boolean_expr expr dnf cnf term atom
+%type <node> boolean_expr expr func term atom
+%type <op> binary_op
 
 %start boolean_expr
 
 %union {
     char *var;
     BDD_node *node;
+    char op;
 }
 
 %%
@@ -29,15 +31,18 @@ boolean_expr
 : expr {T->set_root($1); YYABORT;}
 
 expr
-: expr THEN dnf {$$ = T->apply(OP_THEN, $1, $3);}
-| dnf {$$ = $1;}
+: expr THEN func {$$ = T->apply(OP_THEN, $1, $3);}
+| func {$$ = $1;}
 
-dnf
-: dnf OR cnf {$$ = T->apply(OP_OR, $1, $3);}
-| cnf {$$ = $1;}
-
-cnf
-: cnf AND term {$$ = T->apply(OP_AND, $1, $3);}
+func
+: func binary_op term {
+    switch($2){
+    case '|': $$ = T->apply(OP_OR, $1, $3); break;
+    case '&': $$ = T->apply(OP_AND, $1, $3); break;
+    case '=': $$ = T->apply(OP_XNOR, $1, $3); break;
+    case 'x': $$ = T->apply(OP_XOR, $1, $3); break;
+    }
+}
 | term {$$ = $1;}
 
 term
@@ -48,6 +53,11 @@ atom
 : LPAREN expr RPAREN {$$ = $2;}
 | VAR {unsigned int ID = T->get_ID(std::string($1)); $$ = T->make_node(ID, T->zero, T->one);}
 
+binary_op
+: OR {$$ = '|';}
+| AND {$$ = '&';}
+| XNOR {$$ = '=';}
+| XOR {$$ = 'x';}
 %%
 
 void yyerror (const char *s)

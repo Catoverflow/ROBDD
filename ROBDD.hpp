@@ -8,7 +8,9 @@ enum binary_op
 {
     OP_AND,
     OP_OR,
-    OP_THEN
+    OP_THEN,
+    OP_XNOR,
+    OP_XOR
 };
 struct BDD_node
 {
@@ -47,7 +49,8 @@ private:
     void _output(BDD_node *, std::ofstream &);
     // for ROBDD printing
     std::unordered_map<unsigned int, std::string> ID_to_var;
-    std::unordered_set<BDD_node, BDD_node_hash> printed;
+    std::unordered_map<BDD_node *, size_t> printed;
+    size_t uuid;
     // for SAT question
     bool _SAT(BDD_node *, bool all_sat);
     unsigned _SATCOUNT(BDD_node *);

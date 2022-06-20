@@ -6,6 +6,8 @@
 %%
 \| { return OR; }
 & { return AND; }
+!= { return XOR; }
+= { return XNOR; }
 ~ { return NOT; }
 -> { return THEN; }
 \( { return LPAREN; }
