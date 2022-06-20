@@ -1,6 +1,8 @@
 #include "ROBDD.hpp"
+#include <iostream>
 #include <fstream>
 #include <getopt.h>
+#include <stdio.h>
 int yyparse();
 ROBDD *T;
 ROBDD::ROBDD()
@@ -92,7 +94,7 @@ BDD_node *ROBDD::_apply(binary_op op, BDD_node *left, BDD_node *right)
         auto r = this->_apply(op, left, right->high);
         res = this->make_node(right->var, l, r);
     }
-    this->apply_table[op][std::pair<BDD_node*,BDD_node*>(left,right)] = res;
+    this->apply_table[op][std::pair<BDD_node *, BDD_node *>(left, right)] = res;
     return res;
 }
 
@@ -169,7 +171,8 @@ void ROBDD::_output(BDD_node *node, std::ofstream &out)
             out << this->ID_to_var[node->low->var];
         else
             out << node->low->var;
-        out << "\"" << "[style = dotted]" << std::endl;
+        out << "\""
+            << "[style = dotted]" << std::endl;
         out << "\"";
         out << this->ID_to_var[node->var];
         out << "\"";
@@ -187,11 +190,64 @@ void ROBDD::_output(BDD_node *node, std::ofstream &out)
     }
 }
 
-int main()
+int main(int argc, char **argv)
 {
+    // for command line args parsing
+    bool all_sat_flag = 0, any_sat_flag = 0, sat_count_flag = 0;
+    char *output_filename = nullptr;
+    int flag;
+    opterr = 0;
+
+    // ref: https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html
+    while ((flag = getopt(argc, argv, "Ssco:")) != -1)
+    {
+        switch (flag)
+        {
+        case 's':
+            any_sat_flag = 1;
+            break;
+        case 'S':
+            all_sat_flag = 1;
+            break;
+        case 'c':
+            sat_count_flag = 1;
+            break;
+        case 'o':
+            output_filename = optarg;
+            break;
+        case '?':
+            if (optopt == 'o')
+                std::cerr << "Option " << optopt << " requires an argument." << std::endl;
+            else if (isprint(optopt))
+                std::cerr << "Unknown option '-" << optopt << ".\n";
+            else
+                std::cerr << "Unknown option character " << optopt << ".\n";
+            return 1;
+        default:
+            abort();
+        }
+    }
+
     T = new ROBDD();
     yyparse();
-    std::ofstream out("res.dot");
-    T->output(out);
+
+    if (all_sat_flag)
+        std::cout << "ALL SAT: " << T->SAT(true) << std::endl;
+    if (any_sat_flag)
+        std::cout << "ANY SAT: " << T->SAT(false) << std::endl;
+    if (sat_count_flag)
+        std::cout << "SAT count: " << T->SATCOUNT() << std::endl;
+    if (output_filename)
+    {
+        std::string filename = output_filename;
+        std::ofstream out(filename + ".tmp");
+        T->output(out);
+        out.close();
+        FILE *fp = popen(("dot " + filename + ".tmp" + " -Tsvg -o " + filename).c_str(), "r");
+        fclose(fp);
+        FILE *rfp = popen(("rm -f " + filename).c_str(), "r");
+        fclose(rfp);
+        std::cout << "output written to " << filename << '.' << std::endl;
+    }
     return 0;
 }
