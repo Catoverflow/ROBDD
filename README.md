@@ -10,7 +10,7 @@
 
 ## Usage
 
-`make ROBDD` conpile to binary first.
+`make ROBDD` compile to binary first.
 
 ~~~~
 Usage: ROBDD [-Ssc] [-o filename]
