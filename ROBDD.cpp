@@ -139,9 +139,10 @@ unsigned int ROBDD::_SATCOUNT(BDD_node *node)
         return 1;
     else if (node->var == 0)
         return 0;
-    return this->_SATCOUNT(node->high) | this->_SATCOUNT(node->low);
+    return this->_SATCOUNT(node->high) + this->_SATCOUNT(node->low);
 }
 
+// buggy
 unsigned int ROBDD::SATCOUNT()
 {
     return this->_SATCOUNT(this->root);
