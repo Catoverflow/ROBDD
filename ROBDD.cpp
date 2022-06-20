@@ -262,14 +262,20 @@ int main(int argc, char **argv)
     if (output_filename)
     {
         std::string filename = output_filename;
-        std::ofstream out(filename + ".tmp");
+        std::ofstream out(filename + ".dot");
         T->output(out);
         out.close();
-        system(("dot " + filename + ".tmp" + " -Tsvg -o " + filename + ".svg").c_str());
-        std::cerr << ("dot " + filename + ".tmp" + " -Tsvg -o " + filename + ".svg").c_str();
-        system(("rm -f " + filename + ".tmp").c_str());
-        std::cerr << ("rm -f " + filename + ".tmp").c_str();
-        std::cout << "output written to " << filename << '.' << std::endl;
+        if (!system(NULL))
+        {
+            std::cerr << "This OS does not support system() call, please convert output to image manually" << std::endl;
+            std::cerr << ".DOT file written to " << filename << std::endl;
+        }
+        else
+        {
+            system(("dot " + filename + ".dot" + " -Tsvg -o " + filename + ".svg").c_str());
+            system(("rm -f " + filename + ".dot").c_str());
+            std::cout << "output written to " << filename << '.' << std::endl;
+        }
     }
     return 0;
 }
