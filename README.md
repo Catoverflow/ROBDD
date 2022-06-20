@@ -28,7 +28,7 @@ Input your proposition then.
 
 For BDD, we take every variables as bool variables, which means they only take 0 or 1 as assignment.
 
-Each variable must start with letter (upper class or lower class), and can be a mixture of digits of letter, as regex `[a-zA-Z]+[0-9]*` suggests.
+Each variable must start with letter (uppercase or lowercase), and can be a mixture of digits of letter, as regex `[a-zA-Z]+[0-9]*` suggests.
 
 ### Operator
 
