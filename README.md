@@ -14,10 +14,10 @@
 
 ~~~~
 Usage: ROBDD [-Ssc] [-o filename]
- -S         - Check if the proposition is All-SAT
- -s         - Check if the proposition is Any-SAT
- -c         - Return SAT count for the proposition
- -o file    - Print ROBDD to filename.svg
+ -S          - Check if the proposition is All-SAT
+ -s          - Check if the proposition is Any-SAT
+ -c          - Return SAT count for the proposition
+ -o filename - Print ROBDD to filename.svg
 ~~~~
 
 Input your proposition then.
