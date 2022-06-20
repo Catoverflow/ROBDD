@@ -195,7 +195,7 @@ int main(int argc, char **argv)
     // for command line args parsing
     bool all_sat_flag = 0, any_sat_flag = 0, sat_count_flag = 0;
     char *output_filename = nullptr;
-    int flag;
+    char flag;
     opterr = 0;
 
     // ref: https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html
@@ -217,11 +217,16 @@ int main(int argc, char **argv)
             break;
         case '?':
             if (optopt == 'o')
-                std::cerr << "Option " << optopt << " requires an argument." << std::endl;
+                fprintf(stderr, "Option -%c requires an argument.\n", optopt);
             else if (isprint(optopt))
-                std::cerr << "Unknown option '-" << optopt << ".\n";
+                fprintf(stderr, "Unknown option `-%c'.\n", optopt);
             else
-                std::cerr << "Unknown option character " << optopt << ".\n";
+                fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
+            std::cerr << "Usage: ROBDD [-s] [-S] [-c] [-o filename]" << std::endl;
+            std::cerr << " -s\t" << "- Print any SAT result" << std::endl;
+            std::cerr << " -S\t" << "- Print all SAT result" << std::endl;
+            std::cerr << " -c\t" << "- Print SAT count" << std::endl;
+            std::cerr << " -o filename\t" << "- Print ROBDD to image" << std::endl;
             return 1;
         default:
             abort();
