@@ -46,6 +46,16 @@ Smaller number means higher priority.
 
 A valid proposition for example: `Aa&B->C0|h`
 
+## Todo
+
+- Short Term
+
+Move print module to visitor pattern, uncouple ROBDD from extensions
+
+- Long Term
+
+Use Bison C++ APIs, introduce `std::shared_ptr` for auto pruning
+
 ## Credits
 
 Henrik Reif Andersen, who wrote *[An Introduction to Binary Decision Diagrams](https://www.cs.utexas.edu/~isil/cs389L/bdd.pdf)* and it's my major reference.
