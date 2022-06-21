@@ -51,7 +51,7 @@ term
 
 atom
 : LPAREN expr RPAREN {$$ = $2;}
-| VAR {unsigned int ID = T->get_ID(std::string($1)); $$ = T->make_node(ID, T->zero, T->one);}
+| VAR {unsigned int ID = T->get_ID(std::string($1)); $$ = T->make_node(ID, T->get_zero(), T->get_one());}
 
 binary_op
 : OR {$$ = '|';}
@@ -62,5 +62,5 @@ binary_op
 
 void yyerror (const char *s)
 {
-    std::cout << s;
+    std::cout << s << std::endl;
 }
