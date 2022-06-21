@@ -1,6 +1,6 @@
 lexer = lex.yy.c
 parser = expression.tab.c expression.tab.h
-src = ROBDD.cpp
+src = ROBDD.cpp main.cpp
 
 ROBDD: $(lexer) $(parser) $(src)
 	g++ -L . $(lexer) $(parser) $(src) -o ROBDD -g
