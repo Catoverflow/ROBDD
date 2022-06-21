@@ -57,6 +57,7 @@ private:
     // for SAT question
     bool _SAT(BDD_node *, bool all_sat);
     unsigned _SATCOUNT(BDD_node *);
+    BDD_node *one, *zero;
 
 public:
     ROBDD();
@@ -73,6 +74,8 @@ public:
     void output(std::ofstream &);
     bool SAT(bool all_sat);
     unsigned int SATCOUNT();
-    BDD_node *one, *zero;
+    BDD_node *get_one() const;
+    BDD_node *get_zero() const;
+    bool empty();
 };
 #endif

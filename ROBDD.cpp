@@ -14,6 +14,19 @@ ROBDD::ROBDD()
     this->node_table[*(this->one)] = this->one;
 }
 
+BDD_node* ROBDD::get_one() const
+{
+    return this->one;
+}
+BDD_node* ROBDD::get_zero() const
+{
+    return this->zero;
+}
+bool ROBDD::empty()
+{
+    return this->root == nullptr;
+}
+
 unsigned int ROBDD::get_ID(std::string var)
 {
     // new var
@@ -252,6 +265,11 @@ int main(int argc, char **argv)
 
     T = new ROBDD();
     yyparse();
+    if (T->empty())
+    {
+        std::cerr << "ROBDD construction failed" << std::endl;
+        exit(-1);
+    }
 
     if (all_sat_flag)
         std::cout << "ALL SAT: " << T->SAT(true) << std::endl;
