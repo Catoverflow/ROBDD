@@ -2,7 +2,7 @@
 
 **An ROBDD constructor and SAT/unSAT solver (WIP)** written in C++
 
-<img src="./example.svg" style="margin-left:auro;margin-right:auto">
+<img src="./example.svg">
 
 ## Requirement
 
@@ -45,6 +45,20 @@ Each variable must start with letter (uppercase or lowercase), and can be a mixt
 Smaller number means higher priority.
 
 A valid proposition for example: `Aa&B->C0|h`
+
+## N Queens
+
+There is a script  `n_queens_test/nqueens.py`, you can use its output as `ROBDD`'s input to test its correctness:
+
+~~~~bash
+python n_queens_test/nqueens.py 6 | ./ROBDD -Ssc
+~~~~
+
+Or print the output, an example is as below, for n > 6, visualization will take a long time.
+
+__6 queens__
+
+<img src="n_queens_test/6-queens.svg">
 
 ## Todo
 
