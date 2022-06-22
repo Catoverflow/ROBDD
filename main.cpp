@@ -59,9 +59,21 @@ int main(int argc, char **argv)
     }
 
     if (all_sat_flag)
-        std::cout << "ALL SAT: " << T->SAT(true) << std::endl;
+    {
+        std::cout << "ALL SAT: ";
+        if (T->SAT(all_sat_flag = true))
+            std::cout << "True" << std::endl;
+        else
+            std::cout << "False" << std::endl;
+    }
     if (any_sat_flag)
-        std::cout << "ANY SAT: " << T->SAT(false) << std::endl;
+    {
+        std::cout << "ANY SAT: ";
+        if (T->SAT(all_sat_flag = false))
+            std::cout << "True" << std::endl;
+        else
+            std::cout << "False" << std::endl;
+    }
     if (sat_count_flag)
         std::cout << "SAT count: " << T->SATCOUNT() << std::endl;
     if (output_filename)
