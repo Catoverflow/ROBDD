@@ -1,7 +1,8 @@
-from cvxpy import diag
-
+from sys import argv
 
 def n_queens_expression_output(n: int) -> str:
+    if n < 2:
+        raise Exception("illegal n")
     # variable
     P = [[f'P{i}{j}' for j in range(n)] for i in range(n)]
     row = ''
@@ -42,4 +43,7 @@ def n_queens_expression_output(n: int) -> str:
 
 
 if __name__ == "__main__":
-    print(n_queens_expression_output(2))
+    try:
+        print(n_queens_expression_output(int(argv[1])))
+    except:
+        exit(-1)
