@@ -5,6 +5,7 @@
 int yylex(void);
 void yyerror(const char *s);
 extern ROBDD *T;
+extern bool frontend_err;
 %}
 
 %code requires {
@@ -28,7 +29,7 @@ extern ROBDD *T;
 %%
 
 boolean_expr
-: expr {T->set_root($1); YYABORT;}
+: expr {T->set_root($1);} RET {YYABORT;} //ret work as EOF
 
 expr
 : expr THEN func {$$ = T->apply(OP_THEN, $1, $3);}
@@ -63,4 +64,5 @@ binary_op
 void yyerror (const char *s)
 {
     std::cout << s << std::endl;
+    frontend_err = true;
 }

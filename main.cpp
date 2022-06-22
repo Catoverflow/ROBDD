@@ -6,6 +6,7 @@
 #include <stdio.h>
 int yyparse();
 ROBDD *T;
+bool frontend_err = false;
 int main(int argc, char **argv)
 {
     // for command line args parsing
@@ -51,7 +52,7 @@ int main(int argc, char **argv)
 
     T = new ROBDD();
     yyparse();
-    if (T->empty())
+    if (T->empty() or frontend_err)
     {
         std::cerr << "ROBDD construction failed" << std::endl;
         exit(-1);

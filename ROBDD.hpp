@@ -40,19 +40,24 @@ private:
         }
     };
     BDD_node *root;
+
+    // Construction
     // for make_node()
     std::unordered_map<BDD_node, BDD_node *, BDD_node_hash> node_table;
     std::unordered_map<std::string, unsigned int> var_to_ID;
-    // for node ID assignment
+    // for var -> ID assignment
     unsigned int avail_ID = 2; // 0 & 1 is reserved
     // for apply()
     std::unordered_map<std::pair<BDD_node *, BDD_node *>, BDD_node *, BDD_pair_hash> apply_table[sizeof(binary_op)];
     BDD_node *_apply(binary_op op, BDD_node *low, BDD_node *high);
     BDD_node *calc(binary_op op, BDD_node *left, BDD_node *right);
-    void _output(BDD_node *, std::ofstream &);
+
+    // Q-A
     // for ROBDD printing
     std::unordered_map<unsigned int, std::string> ID_to_var;
     std::unordered_map<BDD_node *, size_t> printed;
+    void _output(BDD_node *, std::ofstream &);
+    // for node -> ID assignment, ID only works as unique tag for graphviz
     size_t uuid;
     // for SAT question
     bool _SAT(BDD_node *, bool all_sat);
