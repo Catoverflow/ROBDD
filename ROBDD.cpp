@@ -1,5 +1,9 @@
 #include "ROBDD.hpp"
 #include <fstream>
+bool BDD_node::operator==(const BDD_node &rhs) const
+{
+    return this->var == rhs.var && this->low == rhs.low && this->high == rhs.high;
+}
 ROBDD::ROBDD()
 {
     this->zero = new BDD_node({0, nullptr, nullptr});
@@ -8,11 +12,11 @@ ROBDD::ROBDD()
     this->node_table[*(this->one)] = this->one;
 }
 
-BDD_node* ROBDD::get_one() const
+BDD_node *ROBDD::get_one() const
 {
     return this->one;
 }
-BDD_node* ROBDD::get_zero() const
+BDD_node *ROBDD::get_zero() const
 {
     return this->zero;
 }
@@ -173,7 +177,6 @@ void ROBDD::output(std::ofstream &out)
     this->printed.clear();
 }
 
-
 void ROBDD::_output(BDD_node *node, std::ofstream &out)
 {
     // print node itself
@@ -187,7 +190,7 @@ void ROBDD::_output(BDD_node *node, std::ofstream &out)
             out << this->ID_to_var[node->var];
         else
             out << node->var;
-        out << "\"]" <<  std::endl; // use label as node name
+        out << "\"]" << std::endl; // use label as node name
     }
     // no subnodes
     if (node->var <= 1)

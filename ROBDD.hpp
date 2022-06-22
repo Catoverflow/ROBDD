@@ -17,7 +17,7 @@ struct BDD_node
     // var = 0 and var = 1 reserved
     unsigned int var;
     BDD_node *low, *high;
-    bool operator==(const BDD_node &rhs) const { return this->var == rhs.var && this->low == rhs.low && this->high == rhs.high; }
+    bool operator==(const BDD_node &rhs) const;
 };
 struct ROBDD
 {
@@ -26,8 +26,8 @@ private:
     {
         std::size_t operator()(const BDD_node &T) const
         {
-            return std::hash<void *>()(static_cast<void *>(T.low))
-                 ^ std::hash<void *>()(static_cast<void *>(T.high))
+            return (std::hash<void *>()(static_cast<void *>(T.low)) // hash result affected by order
+                 - std::hash<void *>()(static_cast<void *>(T.high)))
                  ^ std::hash<int>()(T.var);
         }
     };
@@ -36,7 +36,7 @@ private:
         std::size_t operator()(const std::pair<BDD_node *, BDD_node *> &T) const
         {
             return std::hash<void *>()(static_cast<void *>(T.first))
-                 ^ std::hash<void *>()(static_cast<void *>(T.second));
+                 - std::hash<void *>()(static_cast<void *>(T.second));
         }
     };
     BDD_node *root;

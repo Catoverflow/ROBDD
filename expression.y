@@ -47,7 +47,7 @@ func
 | term {$$ = $1;}
 
 term
-: NOT atom {$$ = $2; auto tmp = $$->high; $$->high = $$->low; $$->low = tmp;}
+: NOT atom {$$ = T->make_node($2->var, $2->high, $2->low);}
 | atom {$$ = $1;}
 
 atom
