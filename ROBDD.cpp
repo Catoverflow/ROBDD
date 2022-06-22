@@ -196,23 +196,20 @@ void ROBDD::_output(BDD_node *node, std::ofstream &out)
     if (node->var <= 1)
         return;
     // print links to subnodes
-    else
-    {
-        // left
-        if (this->printed.find(node->low) == this->printed.end())
-            _output(node->low, out);
-        out << "\"";
-        out << this->printed[node];
-        out << "\" -> \"";
-        out << this->printed[node->low];
-        out << "\" [style = dotted]" << std::endl;
-        // right
-        if (this->printed.find(node->high) == this->printed.end())
-            _output(node->high, out);
-        out << "\"";
-        out << this->printed[node];
-        out << "\" -> \"";
-        out << this->printed[node->high];
-        out << "\"" << std::endl;
-    }
+    // left
+    if (this->printed.find(node->low) == this->printed.end())
+        _output(node->low, out);
+    out << "\"";
+    out << this->printed[node];
+    out << "\" -> \"";
+    out << this->printed[node->low];
+    out << "\" [style = dotted]" << std::endl;
+    // right
+    if (this->printed.find(node->high) == this->printed.end())
+        _output(node->high, out);
+    out << "\"";
+    out << this->printed[node];
+    out << "\" -> \"";
+    out << this->printed[node->high];
+    out << "\"" << std::endl;
 }
