@@ -13,10 +13,11 @@
 `make ROBDD` compile to binary first.
 
 ~~~~
-Usage: ROBDD [-Ssc] [-o filename]
+Usage: ROBDD [-Ssco] [-o filename]
  -S          - Check if the proposition is All-SAT
  -s          - Check if the proposition is Any-SAT
  -c          - Return SAT count for the proposition
+ -t          - Return ROBDD construction time cost
  -o filename - Print ROBDD to filename.svg
 ~~~~
 
