@@ -186,11 +186,14 @@ void ROBDD::_output(BDD_node *node, std::ofstream &out)
         out << "\"";
         out << this->printed[node]; // use uuid to identify nodes
         out << "\" [label=\"";
-        if (node->var > 1)
-            out << this->ID_to_var[node->var];
-        else
-            out << node->var;
+        out << this->ID_to_var[node->var];
         out << "\"]" << std::endl; // use label as node name
+    }
+    else if (this->printed[node] < 2) // 0 or 1
+    {
+        out << "\"";
+        out << this->printed[node]; // use uuid to identify nodes
+        out << "\"" << std::endl;
     }
     // no subnodes
     if (node->var <= 1)
