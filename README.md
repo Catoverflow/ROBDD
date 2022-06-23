@@ -1,6 +1,6 @@
 # ROBDD
 
-**An ROBDD constructor and SAT/unSAT solver (WIP)** written in C++
+**An ROBDD constructor and SAT/unSAT solver** written in C++
 
 <img src="./example.svg">
 
@@ -65,11 +65,11 @@ __6 queens__
 
 - Short Term
 
-Move print module to visitor pattern, uncouple ROBDD from extensions
+​	Move print module to visitor pattern, uncouple ROBDD from extensions
 
 - Long Term
 
-Use Bison C++ APIs, introduce `std::shared_ptr` for auto pruning
+​	Use Bison C++ APIs, introduce `std::shared_ptr` for auto pruning
 
 ## Credits
 
