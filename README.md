@@ -8,6 +8,21 @@
 
 `flex`, `bison` for ROBDD frontend, `graphviz` for image generating.
 
+~~~~mermaid
+flowchart LR
+    subgraph Frontend
+    Flex--"lexical symbol"-->Bison
+    end
+    subgraph Backend
+    ROBDD
+    end
+    subgraph Visualization
+    Graphviz
+    end
+    Bison<--"construct & reduce\nby LALR"-->ROBDD
+    ROBDD--"format &\noutput"-->Graphviz
+~~~~
+
 ## Usage
 
 `make ROBDD` compile to binary first.
