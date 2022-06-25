@@ -29,12 +29,17 @@ flowchart LR
 
 ~~~~
 Usage: ROBDD [-Ssco] [-o filename]
- -S          - Check if the proposition is All-SAT
- -s          - Check if the proposition is Any-SAT
- -c          - Return SAT count for the proposition
- -t          - Return ROBDD construction time cost
- -o filename - Print ROBDD to filename.svg
+ -S           - Check if the proposition is All-SAT
+ -s           - Check if the proposition is Any-SAT
+ -A           - Construct ROBDD under fixed ASCII order,
+                smallest variable at top
+ -a (default) - Construct ROBDD under parsing order
+ -c           - Return SAT count for the proposition
+ -t           - Return ROBDD construction time cost
+ -o filename  - Print ROBDD to filename.svg
 ~~~~
+
+*Note: `-a` is a heuristic approach, `-A` may result in over-sized ROBDD*
 
 Input your proposition then.
 
@@ -42,9 +47,7 @@ Input your proposition then.
 
 ### Variable
 
-For BDD, we take every variables as bool variables, which means they only take 0 or 1 as assignment.
-
-Each variable must start with letter (uppercase or lowercase), and can be a mixture of digits of letter, as regex `[a-zA-Z]+[0-9]*` suggests.
+For BDD, we take every variables as bool variables, which means they only take 0 or 1 as assignment. Each variable must start with letter (uppercase or lowercase), and can be a mixture of digits of letter, as regex `[a-zA-Z]+[0-9]*` suggests.
 
 ### Operator
 
