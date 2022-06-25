@@ -4,12 +4,13 @@ bool BDD_node::operator==(const BDD_node &rhs) const
 {
     return this->var == rhs.var && this->low == rhs.low && this->high == rhs.high;
 }
-ROBDD::ROBDD()
+ROBDD::ROBDD(bool order_by_ascii)
 {
     this->zero = new BDD_node({0, nullptr, nullptr});
     this->one = new BDD_node({1, nullptr, nullptr});
     this->node_table[*(this->zero)] = this->zero;
     this->node_table[*(this->one)] = this->one;
+    this->order_by_ascii = order_by_ascii;
 }
 
 BDD_node *ROBDD::get_one() const
@@ -29,7 +30,11 @@ unsigned int ROBDD::get_ID(std::string var)
 {
     // new var
     if (this->var_to_ID.find(var) == this->var_to_ID.end())
-        this->var_to_ID[var] = avail_ID++;
+    {
+        this->var_to_ID[var] = avail_ID;
+        this->ID_to_var[avail_ID] = var;
+        avail_ID++;
+    }
     return this->var_to_ID[var];
 }
 
@@ -94,6 +99,10 @@ BDD_node *ROBDD::apply(binary_op op, BDD_node *left, BDD_node *right)
 
 BDD_node *ROBDD::_apply(binary_op op, BDD_node *left, BDD_node *right)
 {
+    auto less = [&](BDD_node *lhs, BDD_node *rhs)
+    {
+        return this->order_by_ascii ? this->ID_to_var[lhs->var] < this->ID_to_var[rhs->var] : lhs->var < rhs->var;
+    };
     auto found = this->apply_table[op].find(std::pair<BDD_node *, BDD_node *>(left, right));
     BDD_node *res;
     if (found != this->apply_table[op].end())
@@ -106,13 +115,13 @@ BDD_node *ROBDD::_apply(binary_op op, BDD_node *left, BDD_node *right)
         auto r = this->_apply(op, left->high, right->high);
         res = this->make_node(left->var, l, r);
     }
-    else if ((left->var < right->var and left->var > 1) or right->var <= 1) // unfold left BDD tree
+    else if ((less(left, right) and left->var > 1) or right->var <= 1) // unfold left BDD tree
     {
         auto l = this->_apply(op, left->low, right);
         auto r = this->_apply(op, left->high, right);
         res = this->make_node(left->var, l, r);
     }
-    else if ((left->var > right->var and right->var > 1) or left->var <= 1) // unfold right BDD tree
+    else // unfold right BDD tree
     {
         auto l = this->_apply(op, left, right->low);
         auto r = this->_apply(op, left, right->high);
@@ -165,8 +174,6 @@ void ROBDD::output(std::ofstream &out)
     this->printed[this->zero] = 0;
     this->printed[this->one] = 1;
     this->uuid = 2;
-    for (auto it : this->var_to_ID)
-        this->ID_to_var[it.second] = it.first;
     out << "digraph ROBDD {\n"
         << "fontname=\"Helvetica,Arial,sans-serif\"\n"
         << "node [fontname=\"Helvetica,Arial,sans-serif\"]\n"

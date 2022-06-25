@@ -11,14 +11,14 @@ bool frontend_err = false;
 int main(int argc, char **argv)
 {
     // for command line args parsing
-    bool all_sat_flag = 0, any_sat_flag = 0, sat_count_flag = 0, timing_flag = 0;
+    bool all_sat_flag = 0, any_sat_flag = 0, sat_count_flag = 0, timing_flag = 0, order_flag = 0;
     std::chrono::steady_clock::time_point begin, end;
     char *output_filename = nullptr;
     char flag;
     opterr = 0;
 
     // ref: https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html
-    while ((flag = getopt(argc, argv, "Sscto:")) != -1)
+    while ((flag = getopt(argc, argv, "SscAato:")) != -1)
     {
         switch (flag)
         {
@@ -30,6 +30,12 @@ int main(int argc, char **argv)
             break;
         case 'c':
             sat_count_flag = 1;
+            break;
+        case 'a':
+            order_flag = 0;
+            break;
+        case 'A':
+            order_flag = 1;
             break;
         case 't':
             timing_flag = 1;
@@ -47,6 +53,9 @@ int main(int argc, char **argv)
             std::cerr << "Usage: ROBDD [-Ssct] [-o filename]" << std::endl;
             std::cerr << " -s\t\t- Check if the proposition is All-SAT" << std::endl;
             std::cerr << " -S\t\t- Check if the proposition is Any-SAT" << std::endl;
+            std::cerr << " -A\t\t- Construct ROBDD under fixed ASCII order," << std::endl
+                      << "\t\t  smallest variable at top" << std::endl;
+            std::cerr << " -a (default)\t- Construct ROBDD under parsing order" << std::endl;
             std::cerr << " -c\t\t- Return SAT count for the proposition" << std::endl;
             std::cerr << " -t\t\t- Return ROBDD construction time cost" << std::endl;
             std::cerr << " -o filename\t- Print ROBDD to filename.svg" << std::endl;
@@ -57,7 +66,7 @@ int main(int argc, char **argv)
     }
     if (timing_flag)
         begin = std::chrono::steady_clock::now();
-    T = new ROBDD();
+    T = new ROBDD(order_flag);
     yyparse();
     if (timing_flag)
         end = std::chrono::steady_clock::now();

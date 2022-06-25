@@ -40,11 +40,12 @@ private:
         }
     };
     BDD_node *root;
-
+    bool order_by_ascii;
     // Construction
     // for make_node()
     std::unordered_map<BDD_node, BDD_node *, BDD_node_hash> node_table;
     std::unordered_map<std::string, unsigned int> var_to_ID;
+    std::unordered_map<unsigned int, std::string> ID_to_var;
     // for var -> ID assignment
     unsigned int avail_ID = 2; // 0 & 1 is reserved
     // for apply()
@@ -54,7 +55,6 @@ private:
 
     // Q-A
     // for ROBDD printing
-    std::unordered_map<unsigned int, std::string> ID_to_var;
     std::unordered_map<BDD_node *, size_t> printed;
     void _output(BDD_node *, std::ofstream &);
     // for node -> ID assignment, ID only works as unique tag for graphviz
@@ -65,7 +65,7 @@ private:
     BDD_node *one, *zero;
 
 public:
-    ROBDD();
+    ROBDD(bool order_by_ascii = false);
     // get id for var
     unsigned int get_ID(std::string var);
     // add or return existed node
