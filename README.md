@@ -1,6 +1,8 @@
-# ROBDD
+# ROBDD Constructor
 
-**An ROBDD constructor and SAT/unSAT solver** written in C++
+**An ROBDD constructor and SAT/unSAT solver** written in C++, featured by **LALR** parsing
+
+Implemented as class project, shared with love
 
 <img src="./example.svg">
 
