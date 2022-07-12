@@ -30,7 +30,7 @@ flowchart LR
 `make ROBDD` compile to binary first.
 
 ~~~~
-Usage: ROBDD [-SscAao] [-o filename]
+Usage: ROBDD [-SscAa] [-o filename]
  -S           - Check if the proposition is All-SAT
  -s           - Check if the proposition is Any-SAT
  -A           - Construct ROBDD under fixed ASCII order,
