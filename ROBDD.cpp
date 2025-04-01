@@ -51,11 +51,7 @@ BDD_node *ROBDD::make_node(unsigned int ID, BDD_node *low, BDD_node *high)
         this->node_table[*new_node] = new_node;
         return new_node;
     }
-}void ROBDD::set_root(BDD_node *node)
-{
-    this->root = node;
 }
-
 
 BDD_node *ROBDD::calc(binary_op op, BDD_node *left, BDD_node *right)
 {
